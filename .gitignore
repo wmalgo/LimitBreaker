@@ -1,0 +1,7 @@
+.vscode
+node_modules
+package-lock.json
+config.py
+*.csv
+__pycache__
+*.pyc

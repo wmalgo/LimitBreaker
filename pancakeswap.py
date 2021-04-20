@@ -17,31 +17,31 @@ class PankCakeSwap:
         self.MAX_APPROVAL_INT = config.max_int
         self.currency = config.wbnb
 
-    def approve(self,token_name):
-        nonce = web3.eth.getTransactionCount(self.account)
-        my_token = token(token_name,web3)
-        contract = my_token.createContract()
-        spender = self.prouter_address
-        max_amount = self.MAX_APPROVAL_INT
+    # def approve(self,address):
+    #     nonce = web3.eth.getTransactionCount(self.account)
+    #     my_token = token(token_name,web3)
+    #     contract = my_token.createContract(address)
+    #     spender = self.prouter_address
+    #     max_amount = self.MAX_APPROVAL_INT
 
-        tx = contract.functions.approve(spender,max_amount).buildTransaction({
-            'nonce'   : nonce,
-            'from'    : self.account,
-            'gasPrice': self.gasPrice,
-            'gas'     : self.gasLimit
-            })
-        signed_tx = web3.eth.account.signTransaction(tx, self.pkey)
-        tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
-        return tx_hash
+    #     tx = contract.functions.approve(spender,max_amount).buildTransaction({
+    #         'nonce'   : nonce,
+    #         'from'    : self.account,
+    #         'gasPrice': self.gasPrice,
+    #         'gas'     : self.gasLimit
+    #         })
+    #     signed_tx = web3.eth.account.signTransaction(tx, self.pkey)
+    #     tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
+    #     return tx_hash
 
-    def isApproved(self, token_name):
-        token_contract = token(token_name,web3).createContract()
-        max_amount = self.MAX_APPROVAL_INT
-        approved_amount = token_contract.functions.allowance(self.account,self.prouter_address).call()
-        if approved_amount == max_amount:
-            return True
-        else:
-            return False
+    # def isApproved(self, address):
+    #     token_contract = token(token_name,web3).createContract()
+    #     max_amount = self.MAX_APPROVAL_INT
+    #     approved_amount = token_contract.functions.allowance(self.account,self.prouter_address).call()
+    #     if approved_amount == max_amount:
+    #         return True
+    #     else:
+    #         return False
 
     def swapExactETHForTokens(self,value,amountMin,path):
         nonce = web3.eth.getTransactionCount(self.account)
