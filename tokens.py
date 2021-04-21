@@ -1,5 +1,5 @@
 import json, requests
-from config import web3
+from config import b_web3
 from config import BscScan_key
 
 def get_abi(address):
@@ -10,21 +10,19 @@ def get_abi(address):
 
 
 class pair:
-    def __init__(self,name):
-        self.name = name.upper()
+    def __init__(self,address):
+        self.address = b_web3.toChecksumAddress(address)
 
-    def createContract(self,address):   
-        addie = web3.toChecksumAddress(address)
-        json_abi = get_abi(addie)
-        contract = web3.eth.contract(address= addie, abi= json_abi)
+    def createContract(self):   
+        json_abi = get_abi(self.address)
+        contract = b_web3.eth.contract(address= self.address, abi= json_abi)
         return contract
 
 class token:
-    def __init__(self,name):
-        self.name = name.upper()
+    def __init__(self,address):
+        self.address = b_web3.toChecksumAddress(address)
 
-    def createContract(self,address):   
-        addie = web3.toChecksumAddress(address)
-        json_abi = get_abi(addie)
-        contract = web3.eth.contract(address= addie, abi= json_abi)
+    def createContract(self):   
+        json_abi = get_abi(self.address)
+        contract = b_web3.eth.contract(address= self.address, abi= json_abi)
         return contract
