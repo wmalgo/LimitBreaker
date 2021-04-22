@@ -12,18 +12,17 @@ class PankCakeSwap:
         self.pancake_router = web3.eth.contract(address=self.prouter_address,abi=self.prouter_abi)
         self.account = web3.toChecksumAddress(wallet)
         self.pkey = pkey
-        self.gasPrice = web3.toWei(20, 'gwei')
-        self.gasLimit = 250000
+        self.gasPrice = web3.toWei(10, 'gwei')
+        self.gasLimit = 300000
         self.MAX_APPROVAL_INT = config.max_int
         self.currency = config.wbnb
 
-    def approve(self,address):
+    def approve(self,token_contract):
         nonce = web3.eth.getTransactionCount(self.account)
-        contract = token(address).createContract()
         spender = self.prouter_address
         max_amount = self.MAX_APPROVAL_INT
 
-        tx = contract.functions.approve(spender,max_amount).buildTransaction({
+        tx = token_contract.functions.approve(spender,max_amount).buildTransaction({
             'nonce'   : nonce,
             'from'    : self.account,
             'gasPrice': self.gasPrice,
@@ -33,8 +32,7 @@ class PankCakeSwap:
         tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
         return tx_hash
 
-    def isApproved(self, address):
-        token_contract = token(address).createContract()
+    def isApproved(self,token_contract):
         max_amount = self.MAX_APPROVAL_INT
         approved_amount = token_contract.functions.allowance(self.account,self.prouter_address).call()
         if approved_amount == max_amount:
